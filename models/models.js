@@ -12,6 +12,13 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+const potatoSchema = new mongoose.Schema({
+  potatoWeight: Number,
+});
+
+const Potato = mongoose.model("Potato", potatoSchema);
+
 module.exports = {
   user: User,
+  potato: Potato,
 };
