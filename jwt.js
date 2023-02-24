@@ -1,15 +1,16 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require('dotenv');
+dotenv.config();
 
-const TOKEN_SECRET =
-  "4b73745e18173c42d7f372f23bce8549ad6bd5108c55dc3f885f4405bff016ea864a6a664d399916569f20d10389ca7531a1411a548a067646a46b4cdd41d571";
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const generateAccessToken = (user) => {
-  return jwt.sign({ user }, TOKEN_SECRET);
+  return jwt.sign({ ...user }, TOKEN_SECRET);
 };
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = authHeader && authHeader.split(" ")[1]; //IF there is header, then split. Otherwise gives undefined
 
   if (token == null) return res.sendStatus(401);
 
@@ -18,6 +19,7 @@ const authenticateToken = (req, res, next) => {
 
     if (err) return res.sendStatus(403);
 
+    // If we have a valid token, we save this user in req.
     req.user = user;
 
     next();

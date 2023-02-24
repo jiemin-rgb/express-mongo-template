@@ -1,0 +1,30 @@
+const express = require("express");
+const { user } = require("../models/models");
+const Model = require("../models/models");
+const { generateAccessToken, authenticateToken } = require("../jwt");
+const router = express.Router();
+const md5 = require("md5"); //For Hashing password
+
+router.post("/", (req, res) => {
+
+    console.log("object")
+    const username = req.body.username;
+    const password = md5(req.body.password);
+
+
+    user.findOne({ username: username }, (err, user) => {
+        if (err) {
+            console.log(err)
+        } else {
+            if (user && user.password === password) {
+                //Create Token
+                const accessToken = generateAccessToken(user)
+                res.status(200).send({ success: true, token: accessToken })
+            } else {
+                res.status(400)
+            }
+        }
+    })
+});
+
+module.exports = router;

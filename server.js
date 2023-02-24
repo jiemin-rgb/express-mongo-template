@@ -1,20 +1,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const routes = require("./routes/routes");
+const signupRoutes = require("./routes/signup");
+const loginRoutes = require("./routes/login");
+const cartRoutes = require("./routes/cart");
 const mongoose = require("mongoose");
+const dotenv = require('dotenv');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+dotenv.config();
 
+//Connecting to database
 mongoose.set("strictQuery", false);
-mongoose.connect(
-  "mongodb+srv://chukimguan:maple123@cluster0.0s9gklj.mongodb.net/?retryWrites=true&w=majority"
-);
+const url = process.env.MONGOLAB_URI;
+mongoose.connect(url);
 
-app.use("/", routes);
+//Routes
+app.use("/signup", signupRoutes);
+app.use("/login", loginRoutes);
+app.use("/cart", cartRoutes);
 
 const port = 5001;
 
