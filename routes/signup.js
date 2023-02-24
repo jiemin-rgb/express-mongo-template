@@ -2,7 +2,7 @@ const express = require("express");
 const Model = require("../models/models");
 const { generateAccessToken, authenticateToken } = require("../jwt");
 const router = express.Router();
-const md5 = require("md5"); //For Hashing password
+const md5 = require("md5"); //For Hashing passwords
 
 router.post("/", (req, res) => {
     const User = Model.user;
